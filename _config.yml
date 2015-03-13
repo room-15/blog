@@ -7,7 +7,7 @@ title:            room-15
 tagline:          The room-15 blog.
 url:              http://room-15.github.io/blog/
 paginate:         1
-baseurl:          /
+baseurl:          http://room-15.github.io/blog/
 author:
   name:           room-15
   # url:          
