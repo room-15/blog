@@ -3,17 +3,17 @@ permalink:        pretty
 relative_permalinks: true
 
 # Setup
-title:            Poole
-tagline:          The Jekyll Butler
-url:              http://getpoole.com
+title:            room-15
+tagline:          The room-15 blog.
+url:              http://room-15.github.io/blog/
 paginate:         1
 baseurl:          /
 author:
-  name:           Mark Otto
-  url:            https://twitter.com/mdo
-  email:          markdotto@gmail.com
+  name:           room-15
+  # url:          
+  # email:        
 
 # Custom vars
 version:          1.0.0
 github:
-  repo:           https://github.com/poole/poole
+  repo:           https://github.com/room-15/blog
