@@ -1,37 +1,44 @@
-### Ruby ###
-*.gem
-*.rbc
-/.config
-/coverage/
-/InstalledFiles
-/pkg/
-/spec/reports/
-/test/tmp/
-/test/version_tmp/
-/tmp/
+# Ignore docs files
+_gh_pages
+_site
+.ruby-version
 
-## Specific to RubyMotion:
-.dat*
-.repl_history
-build/
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.zip
+*.vi
+*~
 
-## Documentation cache and generated files:
-/.yardoc/
-/_yardoc/
-/doc/
-/rdoc/
+# OS or Editor folders
+.DS_Store
+._*
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+*.sublime-project
+*.sublime-workspace
+.idea
 
-## Environment normalisation:
-/.bundle/
-/vendor/bundle
-/lib/bundler/man/
+# Komodo
+*.komodoproject
+.komodotools
 
-# for a library or gem, you might want to ignore these files since the code is
-# intended to run in multiple environments; otherwise, check them in:
-# Gemfile.lock
-# .ruby-version
-# .ruby-gemset
+# grunt-html-validation
+validation-status.json
+validation-report.json
 
+# Folders to ignore
+node_modules
 
-### Mac OS X ###
+# Mac OS X
 .DS_Store
