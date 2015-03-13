@@ -1,20 +1,20 @@
 # Permalinks
-permalink:        pretty
+permalink: pretty
 relative_permalinks: true
 
 # Setup
-title:            room-15
-tagline:          The room-15 blog.
-url:              http://room-15.github.io/blog/
-paginate:         1
-baseurl:          http://room-15.github.io/blog/
-permalink: /blog/:categories/:year/:month/:day/:title.html.
-author:
-  name:           room-15
+title: room-15
+tagline: The room-15 blog.
+url: http://room-15.github.io/blog/
+paginate: 1
+baseurl: http://room-15.github.io/blog/
+permalink: blog/:categories/:year/:month/:day/:title.html.
+author: 
+  name: room-15
   # url:          
   # email:        
 
 # Custom vars
-version:          1.0.0
-github:
-  repo:           https://github.com/room-15/blog
+version: 1.0.0
+github: 
+  repo: https://github.com/room-15/blog
