@@ -8,7 +8,6 @@ tagline: The room-15 blog.
 url: http://room-15.github.io/blog/
 paginate: 1
 baseurl: /blog
-#permalink: /blog/:categories/:year/:month/:day/:title.html
 author: 
   name: room-15
   # url:          
