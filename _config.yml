@@ -1,6 +1,6 @@
 # Permalinks
 permalink: pretty
-relative_permalinks: true
+relative_permalinks: false
 
 # Setup
 title: room-15
