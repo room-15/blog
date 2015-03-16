@@ -8,12 +8,13 @@ tagline: The room-15 blog.
 url: http://room-15.github.io/blog/
 paginate: 5
 baseurl: /blog
-author: 
+author:
   name: room-15
-  # url:          
-  # email:        
+  # url:
+  # email:
 
 # Custom vars
 version: 1.0.0
-github: 
+github:
   repo: https://github.com/room-15/blog
+allposts: /blog/all-posts.html
