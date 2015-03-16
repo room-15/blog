@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Websites shoud keep up with Material Design
+title: Websites should keep up with Material Design
 ---
 
 [Material Design](http://www.google.com/design/spec/material-design/) has been around for quite some time now, and many apps are adopting the new design. Not only apps, but many websites are doing that too. But there's a difference between an app and a website. For example, websites can't change the color of the Action Bar (of the browser). But now, it turns out that Google Chrome supports this.
@@ -11,4 +11,4 @@ As simple as that. Starting from Chrome version 39, the `theme-color` meta tag i
 
 ### Conclusion
 
-Websites such as [PubNub](http://www.pubnub.com﻿) already implements this. Web developers should update their sites to keep up with this new feature.
+Websites such as [PubNub](http://www.pubnub.com) already implements this. Web developers should update their sites to keep up with this new feature.
