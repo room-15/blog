@@ -15,8 +15,8 @@ title: Home
     <span class="post-date">{{ post.date | date_to_string }} | by {{ post.post_author }}</span>
 
     {{ post.content | truncatewords: 75 }}<br>
-    <a href="{{site.baseurl}}{{ post.url }}">Read more...</a>
-    
+    <a href="{{site.baseurl}}{{ post.url }}">Read more...</a><br>
+
   </div>
   {% endfor %}
 </div>
