@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Adventures in Espresso and Unit Testing Part 1
-author: Carl Anderson
+post_author: Carl Anderson
 ---
 
 ### Intro
