@@ -6,7 +6,7 @@ relative_permalinks: true
 title: room-15
 tagline: The room-15 blog.
 url: http://room-15.github.io/blog/
-paginate: 5
+paginate: 15
 baseurl: /blog
 author:
   name: room-15
@@ -17,4 +17,3 @@ author:
 version: 1.0.0
 github:
   repo: https://github.com/room-15/blog
-allposts: /blog/all-posts.html

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Keep the "m" prefix
+post_author: WarrenFaith
 ---
 
 Recently I stumbled upon [an article that argued against the usage of the "m" prefix](http://trevore.com/post/stop-it-m-prefix).
