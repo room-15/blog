@@ -19,9 +19,15 @@ source code. Just compare some samples on
 [bitbucket](https://bitbucket.org/kugking/datas-for-android-android-studio/src/3f9a3be7ff5118e02ae11b1f24741b0b1cc6ed00/app/src/main/java/kavita/zocial365/app/datas/FullScreenImageActivity.java?at=master),
 [stash](https://confluence.atlassian.com/download/attachments/300817283/STASH13_PRactivity.png?version=1&modificationDate=1349754860272&api=v2)
 and [gerrit](https://android-review.googlesource.com/#/c/136041/2/services/core/java/com/android/server/wm/WindowManagerService.java).
+There is no visible difference between a local variable and a member variable. You can't use any shortcut you know from
+your IDE to easily identify if that one variable is a member or a local or a parameter. You have to search for it to get
+the information.
 
 Especially for the review tools stash and gerrit the context of a variable is not always directly visible. If the method is
 too large and complex, even the local context might not be completely visible or easy to understand.
+
+In a situation like that you will be very happy to find some kind of prefix to identify if what kind of variable you are
+looking at.
 
 ### IDE benefits
 
