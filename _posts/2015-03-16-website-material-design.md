@@ -11,4 +11,4 @@ As simple as that. Starting from Chrome version 39, the `theme-color` meta tag i
 
 ### Conclusion
 
-Websites such as [PubNub](http://www.pubnub.com/﻿) already implements this. Web developers should update their sites to keep up with this new feature.
+Websites such as [PubNub](http://www.pubnub.com﻿) already implements this. Web developers should update their sites to keep up with this new feature.
