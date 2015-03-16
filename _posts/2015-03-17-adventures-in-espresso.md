@@ -15,13 +15,15 @@ The first thing you need to know with the Setup instructions page, is that it ap
 * All of the examples are using statically imported functions. So things like *onView* is really *Espresso.onView*, but since they don't list their imports in the examples, cutting and pasting is going to result in a bunch of compile errors. Check the comments at the bottom of the page to get help with figuring them out.
 * The example uses the @LargeTest annotation, but doesn't say what it is, or why. I found a pretty good explanation [here](http://googletesting.blogspot.com/2010/12/test-sizes.html).
 
-The HelloWorld test they post has basically no explanation(which tends to be the status quo with this API). It wasn't until using the API for a bit that I even understood what it tests - it looks for a View object that specifically has the exact text of "Hello world". Not "Hello World", not "Hello World!", if you type the wrong text, it won't find the view, and will fail. After finding the view (or not), it specifically checks whether it is displayed or not. You would think that *check()* would return a [boolean value](http://stackoverflow.com/questions/20807131/espresso-return-boolean-if-view-exists), but instead it returns a *ViewInteraction*. wat.
+The HelloWorld test they post has basically no explanation(which tends to be the status quo with this API). It wasn't until using the API for a bit that I even understood what it tests - it looks for a View object that specifically has the exact text of "Hello world". Not "Hello World", not "Hello World!", and certainly not "mHello_World." If you type the wrong text, it won't find the view, and will fail. After finding the view (or not), it specifically checks whether it is displayed or not. You would think that *check()* would return a [boolean value](http://stackoverflow.com/questions/20807131/espresso-return-boolean-if-view-exists), but instead it returns a *ViewInteraction*. wat.
 
 Anyway, the entire test is fairly useless, I recommend skipping it and writing your own equivalent for your app. Find a view object (TextView or similar) that will show up on your app's main Activity, and write a line to check if it's there:
 
       onView(withId(R.id.main_activity_textview)).check(matches(isDisplayed()));
 
-I'm getting ahead of my self here, at this point I had changed my gradle file to have all of the changes necessary to get Espresso to run, the next step was writing an actual test. Two questions I had at this point - where do I put my tests, and how do I run them. Now, the guide suggests putting them in
+### Test File locations
+
+I'm getting ahead of my self a bit. At this point I had changed my gradle file to have all of the changes necessary to get Espresso to run, the next step was writing an actual test. Two questions I had at this point - where do I put my tests, and how do I run them. Now, the guide suggests putting them in
 
 > src/androidTest/java/com.example.package/
 
