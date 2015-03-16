@@ -12,7 +12,7 @@ title: Home
       </a>
     </h1>
 
-    <span class="post-date">{{ post.date | date_to_string }} | by {{ page.post_author }}</span>
+    <span class="post-date">{{ post.date | date_to_string }} | by {{ post.post_author }}</span>
 
     {{ post.content }}
   </div>
