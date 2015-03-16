@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Websites should keep up with Material Design
+post_author: jyoon
 ---
 
 [Material Design](http://www.google.com/design/spec/material-design/) has been around for quite some time now, and many apps are adopting the new design. Not only apps, but many websites are doing that too. But there's a difference between an app and a website. For example, websites can't change the color of the Action Bar (of the browser). But now, it turns out that Google Chrome supports this.
