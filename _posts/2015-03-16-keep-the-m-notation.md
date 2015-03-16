@@ -46,4 +46,4 @@ the C# "separate line" style.
 
 The arguments on the mentioned article are not wrong by definition but I feel that they aren't considering the daily
 work a professional programmer has to do and that therefore the weight of these arguments is not enough to revolt against
-the provided Android standard.
+the [provided Android code style](https://source.android.com/source/code-style.html).
