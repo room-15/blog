@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Introducing the Room-15 Blog
+author: jyoon
 ---
 
 ### We're Alive!
