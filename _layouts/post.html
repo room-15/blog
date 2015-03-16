@@ -16,7 +16,7 @@ layout: default
         <h3>
           <a href="{{site.baseurl}}{{ post.url }}">
             {{ post.title }}
-            <small>{{ post.date | date_to_string }}</small>
+            <small>{{ post.date | date_to_string }} | by {{ page.post_author }}</small>
           </a>
         </h3>
       </li>
