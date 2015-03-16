@@ -4,8 +4,6 @@ title: Adventures in Espresso and Unit Testing Part 1
 post_author: Carl Anderson
 ---
 
-### Intro
-
 I recently decided it was time to add some automated testing to my app. After doing a bit of research, it seemed like adding Espresso for automated testing, and JUnit tests for my model objects would be the right way to go. So I started off by going to the [Espresso setup page](https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions), which had a bunch of instructions for my IDE, Android Studio. It seemed relatively straightforward. Seemed.
 
 ### Setting up Espresso
