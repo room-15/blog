@@ -16,7 +16,7 @@ title: All Posts
     <span class="post-date">{{ post.date | date_to_string }}</span>
 
     {{ post.content | truncatewords:25 }}<br>
-    <a href="{{site.baseurl}}{{ post.url }}">Read more...</a>
+    <a href="{{site.baseurl}}{{ post.url }}">Read more...</a><hr>
 
   </div>
   {% endfor %}
