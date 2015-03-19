@@ -249,4 +249,13 @@ a.sidebar-nav-item:focus {
   color: #8f5536;
 }
 
-pre { white-space: pre; overflow: auto; }
+pre {
+  white-space: pre; 
+  overflow: auto; 
+}
+
+.highlight pre {
+  margin-bottom: 0;
+  word-wrap: normal;
+  overflow: auto;
+}
