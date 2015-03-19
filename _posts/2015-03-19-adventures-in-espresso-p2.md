@@ -22,6 +22,7 @@ I'm a big believer in concrete examples, so let's examine one of my new test sit
 
 After writing all of my test code, this is the top-level test that I run to do a login:
 
+{% highlight java %}
     public void testLoginAndLogoutWithEmail() {
       TestMainBrowseActivity main = new TestMainBrowseActivity();
       TestLoginActivity login = main.navigateToOnboarding().navigateToSignup().navigateToLogin();
@@ -29,6 +30,7 @@ After writing all of my test code, this is the top-level test that I run to do a
       login.login(emailLoginPOJO);
       main.navigateToSettings().logout();
     }
+{% endhighlight %}
 
 Let's look at what this code is doing.
 
@@ -36,6 +38,7 @@ Let's look at what this code is doing.
 
 Since my tests want to replicate the behavior of a user's flow through the app, I don't start with the Login page (although Espresso allows that). Instead I instantiate the Page Object corresponding to the first page of the app:
 
+{% highlight java %}
     public class TestMainBrowseActivity {
 
         public TestMainBrowseActivity() {
@@ -53,6 +56,7 @@ Since my tests want to replicate the behavior of a user's flow through the app, 
             return new TestSettingsActivity();
         }
     }
+{% endhighlight %}
 
 The first thing to notice about this code, is that the constructor does an Espresso test to see if one of the buttons for that Activity is visible. I do a similar test in each of the Page Objects. If one of the obvious UI components isn't showing, then clearly something in the navigation is probably messed up, and the test should fail at that point. One thing I'm not doing, that I might do in a future is try to encapsulate the navigation into separate Navigator classes.
 
@@ -70,12 +74,14 @@ In the next line, we're creating (from a static factory method) a valid login PO
 
 Here is that function:
 
+{% highlight java %}
     public static EmailLoginPOJO createValidLogin() {
         EmailLoginPOJO emailLoginPOJO = new EmailLoginPOJO();
         emailLoginPOJO.setEmail("noIdidntPutValidLoginCredential@intoThisExample.com");
         emailLoginPOJO.setPassword("butThanksForChecking");
         return emailLoginPOJO;
     }
+{% endhighlight %}
 
 The advantage here, is that if the requirements for a valid email login change, all I have to do is modify the POJO, and the TestLoginActivity, and none of the rest of the code has to be modified at all. I can see at a later time, adding additional static factory methods that generate invalid logins, to test things like invalid email addresses, and invalid usernames. 
 
@@ -85,6 +91,7 @@ Finally we can perform the actual login:
 
 Here's the Login function in our TestLoginActivity class:
 
+{% highlight java %}
     public TestUserDetailFragment login(EmailLoginPOJO pojo) {
         onView(withId(R.id.login_email)).perform(typeText(pojo.getEmail()));
         onView(withId(R.id.login_pass)).perform(typeText(pojo.getPassword()));
@@ -98,6 +105,7 @@ Here's the Login function in our TestLoginActivity class:
 
         return new TestUserDetailFragment();
     }
+{% endhighlight %}
 
 As you can see, we first take the POJO and apply the data to the specific EditText fields on that page, and then click the login_button. One thing I haven't implemented yet (but Espresso supports) is a way to wait for results before continuing with the current test, called a IdlingResource. For now I just have the sleep command while I wait for the user login to hit the backend server, but will be replacing that eventually. Finally, once the login is successful, the user is landed on their own profile page, so I instantiate a UserDetail Page Object and return it.
 
