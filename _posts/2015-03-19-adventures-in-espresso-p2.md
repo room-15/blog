@@ -12,9 +12,9 @@ One of the articles that I read, while researching how to write good UI tests wa
 
 *You can view Part 1 of this series [here](http://room-15.github.io/blog/2015/03/17/adventures-in-espresso/)*
 
-Having gotten Espresso up and running, I excitedly started writing test code. My first real test was terrible. It was worse than the BrittleTest shown in that article. As a "low hanging fruit", I wanted to write a test that basically just loaded each individual screen in my app. Since some of them were only accessible when you were logged in, I decided to write one huge monolithic test that visited tons of different screens and logged in part of the way there (and then logged out at the end of the test). My test was terrible because it was just one gigantic test doing far too many things at once, and because it was fragile - any change to the layout / navigation of my code would have broken the test. If it was difficult to fix the test, then all of my testing would just have to be thrown away.
+Having gotten Espresso up and running, I excitedly started writing test code. My first real test was terrible. It was worse than the BrittleTest shown in that article. As a "low hanging fruit", I wanted to write a test that just loaded each individual screen in my app. Since some of them were only accessible when you were logged in, I decided to write one huge monolithic test that visited tons of different screens and logged into the app while visiting them (and then logged out at the end of the test). My test was terrible because it was just one gigantic test doing far too many things at once, and because it was fragile - any change to the layout / navigation of my code would have broken the test. If it was difficult to fix the test, then all of my testing would just have to be thrown away.
 
-So I deleted that test and started over, with the principles of applying the Page Object pattern to my app. Each page (Activity / Fragment)  in my app was going to get a separate class that could test it. These test classes would encapsulate all of the logic for that particular screen. Additionally, for any screen that has some sort of user input (EditText, etc), I would create a POJO object that these classes would take, and be able to input that POJO properly into the fields.
+So I deleted that test and started over, with the principles of applying the Page Object pattern to my app. Each page (Activity / Fragment)  in my app was going to get a separate class that knew how to manipulate that specific screen. Additionally, for any screen that has some sort of user input (EditText, etc), I would create a POJO object that these classes would take, and be able to input that POJO properly into the fields.
 
 I'm a big believer in concrete examples, so let's examine one of my new test situations. I wanted to test whether a user could log into my app using their Email account. When the app starts up, the user is presented with a MainBrowseActivity that has numerous tabs displayed. In order to log in, the user pushes the profile button, which displays an OnboardingFragment where we try to get the user to sign up for the app. The button on this Onboarding fragment takes a user to a SignUpActivity, which has a login button on it. This login button takes them to a LoginActivity, where they (finally) can put in their credentials and log into the app.
 
@@ -22,6 +22,7 @@ I'm a big believer in concrete examples, so let's examine one of my new test sit
 
 After writing all of my test code, this is the top-level test that I run to do a login:
 
+{% highlight java %}
     public void testLoginAndLogoutWithEmail() {
       TestMainBrowseActivity main = new TestMainBrowseActivity();
       TestLoginActivity login = main.navigateToOnboarding().navigateToSignup().navigateToLogin();
@@ -29,6 +30,7 @@ After writing all of my test code, this is the top-level test that I run to do a
       login.login(emailLoginPOJO);
       main.navigateToSettings().logout();
     }
+{% endhighlight %}
 
 Let's look at what this code is doing.
 
@@ -36,6 +38,7 @@ Let's look at what this code is doing.
 
 Since my tests want to replicate the behavior of a user's flow through the app, I don't start with the Login page (although Espresso allows that). Instead I instantiate the Page Object corresponding to the first page of the app:
 
+{% highlight java %}
     public class TestMainBrowseActivity {
 
         public TestMainBrowseActivity() {
@@ -53,6 +56,7 @@ Since my tests want to replicate the behavior of a user's flow through the app, 
             return new TestSettingsActivity();
         }
     }
+{% endhighlight %}
 
 The first thing to notice about this code, is that the constructor does an Espresso test to see if one of the buttons for that Activity is visible. I do a similar test in each of the Page Objects. If one of the obvious UI components isn't showing, then clearly something in the navigation is probably messed up, and the test should fail at that point. One thing I'm not doing, that I might do in a future is try to encapsulate the navigation into separate Navigator classes.
 
@@ -70,12 +74,14 @@ In the next line, we're creating (from a static factory method) a valid login PO
 
 Here is that function:
 
-    public static EmailLoginPOJO createValidLogin() {
-        EmailLoginPOJO emailLoginPOJO = new EmailLoginPOJO();
-        emailLoginPOJO.setEmail("noIdidntPutValidLoginCredential@intoThisExample.com");
-        emailLoginPOJO.setPassword("butThanksForChecking");
-        return emailLoginPOJO;
-    }
+{% highlight java %}
+public static EmailLoginPOJO createValidLogin() {
+    EmailLoginPOJO emailLoginPOJO = new EmailLoginPOJO();
+    emailLoginPOJO.setEmail("noIdidntPutValidLoginCredential@intoThisExample.com");
+    emailLoginPOJO.setPassword("butThanksForChecking");
+    return emailLoginPOJO;
+}
+{% endhighlight %}
 
 The advantage here, is that if the requirements for a valid email login change, all I have to do is modify the POJO, and the TestLoginActivity, and none of the rest of the code has to be modified at all. I can see at a later time, adding additional static factory methods that generate invalid logins, to test things like invalid email addresses, and invalid usernames. 
 
@@ -85,19 +91,21 @@ Finally we can perform the actual login:
 
 Here's the Login function in our TestLoginActivity class:
 
-    public TestUserDetailFragment login(EmailLoginPOJO pojo) {
-        onView(withId(R.id.login_email)).perform(typeText(pojo.getEmail()));
-        onView(withId(R.id.login_pass)).perform(typeText(pojo.getPassword()));
-        onView(withId(R.id.login_button)).perform(click());
+{% highlight java %}
+public TestUserDetailFragment login(EmailLoginPOJO pojo) {
+  onView(withId(R.id.login_email)).perform(typeText(pojo.getEmail()));
+  onView(withId(R.id.login_pass)).perform(typeText(pojo.getPassword()));
+  onView(withId(R.id.login_button)).perform(click());
 
-        try {
-            sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+  try {
+    sleep(4000);
+  } catch (InterruptedException e) {
+    e.printStackTrace();
+  }
 
-        return new TestUserDetailFragment();
-    }
+  return new TestUserDetailFragment();
+}
+{% endhighlight %}
 
 As you can see, we first take the POJO and apply the data to the specific EditText fields on that page, and then click the login_button. One thing I haven't implemented yet (but Espresso supports) is a way to wait for results before continuing with the current test, called a IdlingResource. For now I just have the sleep command while I wait for the user login to hit the backend server, but will be replacing that eventually. Finally, once the login is successful, the user is landed on their own profile page, so I instantiate a UserDetail Page Object and return it.
 
