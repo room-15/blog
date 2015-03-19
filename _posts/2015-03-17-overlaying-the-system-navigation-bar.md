@@ -38,31 +38,35 @@ Finally, there exist purely internal Window types, e.g., for the navigation bar.
 
 Windows can be added via the [WindowManager](http://developer.android.com/reference/android/view/WindowManager.html):
 
-    // get the WindowManager for the context-specific Display
-    WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
-    
-    // create the (root) View for the new Window
-    View v = new View(context);
-    // [... setup the View]
-    
-    // setup parameters for the Window
-    // [... width, height, x and y pos]
-    // create a system alert Window (requires the SYSTEM_ALERT_WINDOW permission)
-    int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-    // make the Window receive no touch input events
-    int flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-    // the pixel format, here: translucent
-    int format = PixelFormat.TRANSLUCENT;
-    
-    // create the LayoutParams for the new Window
-    WindowManager.LayoutParams params = new WindowManager.LayoutParams(width, height, xpos, ypos, type, flags, format);
-    
-    // add the View to the WindowManager instance, creating a new Window
-    wm.addView(view, params);
+{% highlight java %}
+// get the WindowManager for the context-specific Display
+WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+
+// create the (root) View for the new Window
+View v = new View(context);
+// [... setup the View]
+
+// setup parameters for the Window
+// [... width, height, x and y pos]
+// create a system alert Window (requires the SYSTEM_ALERT_WINDOW permission)
+int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+// make the Window receive no touch input events
+int flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+// the pixel format, here: translucent
+int format = PixelFormat.TRANSLUCENT;
+
+// create the LayoutParams for the new Window
+WindowManager.LayoutParams params = new WindowManager.LayoutParams(width, height, xpos, ypos, type, flags, format);
+
+// add the View to the WindowManager instance, creating a new Window
+wm.addView(view, params);
+{% endhighlight %}
 
 Similarly, a Window can be removed:
 
-    wm.removeView(view);
+{% highlight java %}
+wm.removeView(view);
+{% endhighlight %}
 
 #### Window Flags
 
