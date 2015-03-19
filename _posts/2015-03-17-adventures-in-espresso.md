@@ -66,4 +66,8 @@ Another aspect that wasn't really clear, is how to configure Android Studio to *
 
 Once I got through all of that, I was able to finally write a Test to go through a lot of different steps in my UI, which is cool and (hopefully) useful.
 
-Part 2 coming soon...
+Part 2 can be found [here](http://room-15.github.io/blog/2015/03/19/adventures-in-espresso-p2/)
+
+#### About the author
+
+*Carl Anderson is the lead Android developer for [Trover.com](http://trover.com)'s Android app, having gotten his feet wet doing Android development at Amazon.com for the Kindle Fire. He has over 13 years of experience in software development, and has been writing Android code since 2013. He lives in Seattle with his wife and two daughters.*
