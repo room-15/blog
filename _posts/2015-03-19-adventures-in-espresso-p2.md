@@ -75,12 +75,12 @@ In the next line, we're creating (from a static factory method) a valid login PO
 Here is that function:
 
 {% highlight java %}
-    public static EmailLoginPOJO createValidLogin() {
-        EmailLoginPOJO emailLoginPOJO = new EmailLoginPOJO();
-        emailLoginPOJO.setEmail("noIdidntPutValidLoginCredential@intoThisExample.com");
-        emailLoginPOJO.setPassword("butThanksForChecking");
-        return emailLoginPOJO;
-    }
+public static EmailLoginPOJO createValidLogin() {
+    EmailLoginPOJO emailLoginPOJO = new EmailLoginPOJO();
+    emailLoginPOJO.setEmail("noIdidntPutValidLoginCredential@intoThisExample.com");
+    emailLoginPOJO.setPassword("butThanksForChecking");
+    return emailLoginPOJO;
+}
 {% endhighlight %}
 
 The advantage here, is that if the requirements for a valid email login change, all I have to do is modify the POJO, and the TestLoginActivity, and none of the rest of the code has to be modified at all. I can see at a later time, adding additional static factory methods that generate invalid logins, to test things like invalid email addresses, and invalid usernames. 
@@ -92,19 +92,19 @@ Finally we can perform the actual login:
 Here's the Login function in our TestLoginActivity class:
 
 {% highlight java %}
-    public TestUserDetailFragment login(EmailLoginPOJO pojo) {
-        onView(withId(R.id.login_email)).perform(typeText(pojo.getEmail()));
-        onView(withId(R.id.login_pass)).perform(typeText(pojo.getPassword()));
-        onView(withId(R.id.login_button)).perform(click());
+public TestUserDetailFragment login(EmailLoginPOJO pojo) {
+  onView(withId(R.id.login_email)).perform(typeText(pojo.getEmail()));
+  onView(withId(R.id.login_pass)).perform(typeText(pojo.getPassword()));
+  onView(withId(R.id.login_button)).perform(click());
 
-        try {
-            sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+  try {
+    sleep(4000);
+  } catch (InterruptedException e) {
+    e.printStackTrace();
+  }
 
-        return new TestUserDetailFragment();
-    }
+  return new TestUserDetailFragment();
+}
 {% endhighlight %}
 
 As you can see, we first take the POJO and apply the data to the specific EditText fields on that page, and then click the login_button. One thing I haven't implemented yet (but Espresso supports) is a way to wait for results before continuing with the current test, called a IdlingResource. For now I just have the sleep command while I wait for the user login to hit the backend server, but will be replacing that eventually. Finally, once the login is successful, the user is landed on their own profile page, so I instantiate a UserDetail Page Object and return it.
