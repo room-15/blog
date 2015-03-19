@@ -18,7 +18,7 @@ So I deleted that test and started over, with the principles of applying the Pag
 
 I'm a big believer in concrete examples, so let's examine one of my new test situations. I wanted to test whether a user could log into my app using their Email account. When the app starts up, the user is presented with a MainBrowseActivity that has numerous tabs displayed. In order to log in, the user pushes the profile button, which displays an OnboardingFragment where we try to get the user to sign up for the app. The button on this Onboarding fragment takes a user to a SignUpActivity, which has a login button on it. This login button takes them to a LoginActivity, where they (finally) can put in their credentials and log into the app.
 
-![Code Flow]({{ site.url }}/blog/images/Flow.png)
+![Code Flow]({{ site.url }}/images/Flow.png)
 
 After writing all of my test code, this is the top-level test that I run to do a login:
 
