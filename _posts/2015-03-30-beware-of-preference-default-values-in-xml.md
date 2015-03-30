@@ -5,7 +5,7 @@ post_author: cygery
 ---
 
 Various [Preferences](http://developer.android.com/reference/android/preference/Preference.html) available in Android 
-make the maintanance of settings straightforward. Even custom Preferences, e.g., for colors, can be created without much effort. 
+make the maintenance of settings straightforward. Even custom Preferences, e.g., for colors, can be created without much effort. 
 By defining [PreferenceScreens](http://developer.android.com/reference/android/preference/PreferenceScreen.html) via XML, 
 default values for each Preference can be set. However, parsing and type conversions of these default values can 
 lead to unexpected and undesired results.
@@ -119,7 +119,7 @@ Default values which can't be parsed as a number are not affected.
 | 2147483648 | -2147483648 | overflow (max. int value + 1) |
 | 4294967296 | 0 | overflow (two times max. int value) |
 | 340282356779700000000000000000000000000 | 872415232 | overflow |
-| 01 | 1 | leading zeroes are removed |
+| 01 | 1 | leading zeros are removed |
 
 #### Bug Reports
 
