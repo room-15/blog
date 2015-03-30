@@ -126,7 +126,7 @@ Default values which can't be parsed as a number are not affected.
 There [exist](https://code.google.com/p/android/issues/detail?id=75693) 
 [multiple](https://code.google.com/p/android/issues/detail?id=74279) 
 [bug reports](https://code.google.com/p/android/issues/detail?id=12005) 
-about this issue
+about this issue.
 
 ### Solution
 
