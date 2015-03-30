@@ -5,7 +5,7 @@ relative_permalinks: true
 # Setup
 title: room-15
 tagline: The room-15 blog.
-url: http://room-15.github.io/blog/
+url: http://room-15.github.io/blog
 paginate: 15
 baseurl: /blog
 author:
