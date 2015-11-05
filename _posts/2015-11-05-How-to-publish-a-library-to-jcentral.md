@@ -79,14 +79,14 @@ It will generate a zip.
 
 On your maven repository, click add new version, add the name you wan to, add the number you want to, click accept, & enter into the version. 
 
-Inside the general tab , on the right side, click add files via GUI, click on upload, add the generated zip, and pick the checkbox that says explode on upload.
+Inside the general tab , on the right side, click add files via GUI, click on upload, add the generated zip, _and pick the checkbox that says explode on upload._
 
 Click send, and after that, go to your package and go to “ link to jcenter” ( bottom right). 
 
 Fill the questionary, and it takes two to 3 days to be accepted into the jcenter repository. 
 
 After that, you can find you package via  
-######compile ‘com.cpteric:ericutils2:0.0.2’ 
+##### compile ‘com.cpteric:ericutils2:0.0.2’ 
 or whatever you picked as 'package : Artifact : version'.
 
 
