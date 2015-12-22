@@ -20,36 +20,33 @@ In other words, the view returned by this is the one we will work with to manipu
 
 If you don't want a completely immersive experience, but would like to dim the status bars you can use the `SYSTEM_UI_FLAG_LOW_PROFILE` flag:
 
-```java
-private void dimBars() {
-	View statusViews = getWindow().getDecorView();
-	statusViews.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-}
-```
+
+	private void dimBars() {
+		View statusViews = getWindow().getDecorView();
+		statusViews.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+	}
 
 ### Hiding the Status Bars
 
 To hide the status bar by itself, you want to use the `SYSTEM_UI_FLAG_FULLSCREEN` flag. It is good practice to hide the ActionBar/Toolbar as well when using full screen:
 
-```java
-private void hideStatusBar() {
-	View statusViews = getWindow().getDecorView();
-	statusViews.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-	getSupportActionBar().hide();
-}
-```
+	private void hideStatusBar() {
+		View statusViews = getWindow().getDecorView();
+		statusViews.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+	
+		getSupportActionBar().hide();
+	}
+
 
 While you can hide the navigation bar by itself, this isn't really necessary. If you are going to hide the navigation bar, you should hide the status bar and action bar as well. Here is how you would create that completely immersive experience:
 
-```java
-private void hideSystemBars() {
-	View statusViews = getWindow().getDecorView();
-	statusViews.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
-	getSupportActionBar().show();
-}
-```
+	private void hideSystemBars() {
+		View statusViews = getWindow().getDecorView();
+		statusViews.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+	
+		getSupportActionBar().show();
+	}
 
 This method uses a bitwise operation to apply two separate flags in order to achieve both full screen (hiding status bar) and hiding the navigation bar.
 
@@ -57,14 +54,12 @@ This method uses a bitwise operation to apply two separate flags in order to ach
 
 To show the bars again, we can still use `setSystemUiVisibility()`. Instead of giving it a flag, we can just pass a value of 0 to clear any existing flags.
 
-```java
-private void showSystemBars() {
-	View statusViews = getWindow().getDecorView();
-	statusViews.setSystemUiVisibility(0);
-
-	getSupportActionBar().show();
-}
-```
+	private void showSystemBars() {
+		View statusViews = getWindow().getDecorView();
+		statusViews.setSystemUiVisibility(0);
+	
+		getSupportActionBar().show();
+	}
 
 ### Conclusion
 
