@@ -4,10 +4,10 @@ title: Static code quality measurements with SonarQube, JaCoCo and UnitTests
 post_author: Martin Breuer
 ---
 
-This post will guide to from scratch to a (nearly) full features static code quality analysis using [SonarQube](http://www.sonarqube.org/), [JaCoCo](http://eclemma.org/jacoco/) and UnitTests with [Junit](http://junit.org/).
+This post will guide you from scratch to a (nearly) full features static code quality analysis using [SonarQube](http://www.sonarqube.org/), [JaCoCo](http://eclemma.org/jacoco/) and UnitTests with [Junit](http://junit.org/).
 As most tutorials out there are quite outdated, this one will give you a basic ground using the latest versions of mentioned tools and plugins.
 
-The usage of SonarQube is limited to a locally instance. Doing the same against a remote server shouldn't be a problem once you have understood the basics.
+The usage of SonarQube is limited to a local instance. Doing the same against a remote server shouldn't be a problem once you have understood the basics.
 
 # Requirements
 
@@ -38,7 +38,7 @@ Next we install all necessary plugins. Go to the "Administrator" page and select
  * XML
 
 It could be possible that some of them are already installed. You can check if they are there when you activate the "Installed" tab.
-The installations are currently just pending, you need to restart or stop/start the Sonar server with the previously mentioned scripts.
+The installations are currently just pending, you need to restart or stop/start the SonarQube server with the previously mentioned scripts.
 
 ### Quality Profiles
 
@@ -50,9 +50,9 @@ Don't forget to set your profile to default so that we do not need to configure 
 
 ### Quality Gates
 
-Quality gates are good to see if a check against the sonar check outcome. You can for example define if new code needs a code coverage of x% and if you fail to meet this criteria, the quality gate failed and you will see it immediately.
+Quality gates are good to verify the sonar check outcome. You can for example define if new code needs a code coverage of x% and if you fail to meet this criteria, the quality gate failed and you will see it immediately.
 
-The build in `SonarQube way` quality gate is a good starting point. It checks if your code coverage is below 80%, if you have new blocker or criticial issues and if your technical debt ratio increased by more than 5% for the new code. All checks are compared with the previous version, so keep an eye on when you change the version number. Probably the best way would be to have that increased at the start of a new development, so you always see the changes you introduced compared to the last version.
+The built-in `SonarQube way` quality gate is a good starting point. It checks if your code coverage is below 80%, if you have new blocker or criticial issues and if your technical debt ratio increased by more than 5% for the new code. All checks are compared with the previous version, so keep an eye on when you change the version number. Probably the best way would be to have that increased at the start of a new development, so you always see the changes you introduced compared to the last version.
 
 ![Code Flow]({{ site.url }}/images/sonarqube-profiles.png)
 
@@ -80,7 +80,7 @@ To enable coverage report generation, we need to set a flag to true. This `testC
     }
 {% endhighlight %}
     
-For understanding purpose, we also add at least a `develop` product flavor. Why will be obvious later. So lets to that
+For understanding purpose, we also add at least a `develop` product flavor. Why will be obvious later. So lets do that
 
 {% highlight groovy %}
     productFlavors {
@@ -90,7 +90,7 @@ For understanding purpose, we also add at least a `develop` product flavor. Why 
     }
 {% endhighlight %}
 
-Sonar requires the app version to track differences between app versions. So we need to "publish" this information so that we can use it everywhere. Add the following line to gradle. Best would be above the `android` block
+SonarQube requires the app version to track differences between app versions. So we need to "publish" this information so that we can use it everywhere. Add the following line to gradle. Best would be above the `android` block
 
 {% highlight groovy %}
     def APP_VERSION = "1.0.0"
@@ -122,7 +122,7 @@ And after that we can apply the plugin in our module gradle file
 {% highlight groovy %}
     apply plugin: 'jacoco-android'
 {% endhighlight %}
-    
+
 What kind of reports are generated should be defined in a separate extension, just add this to your module gradle file (outside the `android` block)
 
 {% highlight groovy %}
@@ -141,18 +141,18 @@ Finally we make sure that we are using the latest version of jacoco by defining 
     }
 {% endhighlight %}
    
-After syncing the project we can see the new added tasks under `reporting`. (Tip: Open the gradle view on the right side of Android Studio, press the "expand all" button and just type "jacoco". Navigate through the list of hits with the arrow keys and you should be able to find the tasks easily)
+After syncing the project we can see the new added tasks under `reporting`. (Hint: Open the gradle view on the right side of Android Studio, press the "expand all" button and just type "jacoco". Navigate through the list of hits with the arrow keys and you should be able to find the tasks easily.)
 For a test run lets just run the `jacocoTestReport` task. When the task is finished, you can see the generated reports when you go to your module build folder. There should be a `reports` directory containing `jacoco` and different reports. You can open the `index.html` that you find in the `html` subdirectory directly in a browser to see the results nicely enhanced and browsable for details (just right click and select `Open in Browser -> Default`).
 
 ![Code Flow]({{ site.url }}/images/sonarqube-junit-result.png)
 
 Inside the `jacoco` folder you also see a `tests` folder where you can see a list of all tests and some small details as well.
 
-    Warning: The `tests` folder will always be created even when a test fails. If one of two tests fails, you will see 50% successful rate in the generated HTML page. The reports are not generated as soon as one test fails. So you have to make sure that your written tests are all working correctly, otherwise you will not see any reports.
+    Warning: The `tests` folder will always be created even when a test fails. If one of two tests fails, you will see 50% successful rate in the generated HTML page. The reports on the other hand are not generated as soon as one test fails. So you have to make sure that your written tests are all working correctly, otherwise you will not see any reports.
 
 ![Code Flow]({{ site.url }}/images/sonarqube-jacoco-result.png)
 
-So now that our tests are working and jacoco creates the reports correctly, we will continue with SonarQube
+So now that our tests are working and jacoco creates the reports correctly, we will continue with SonarQube.
 
 ## SonarQube Plugin
 
@@ -187,8 +187,8 @@ Now the magic begins. We have different properties we need to define. Instead of
     sonarqube {
         //noinspection GroovyAssignabilityCheck
         properties {
-            /* Sonar needs to be informed about your libraries and the android.jar to understand that methods like
-             * onResume() is called by the Android framework. Without that information Sonar will very likely create warnings
+            /* SonarQube needs to be informed about your libraries and the android.jar to understand that methods like
+             * onResume() is called by the Android framework. Without that information SonarQube will very likely create warnings
              * that those methods are never used and they should be removed. Same applies for libraries where parent classes
              * are required to understand how a class works and is used. */
             def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-22/android.jar," +
@@ -220,7 +220,7 @@ Now the magic begins. We have different properties we need to define. Instead of
     }
 {% endhighlight %}
     
-This is our complete sonar setup. To make everything that is needed before starting the sonar check, we would need to start multiple tasks one after the other. To prevent that, I made a short method that executes a list of tasks on the command line (because chaining tasks in gradle somehow failed to work)
+This is our complete SonarQube setup. To make everything that is needed before starting the SonarQube check, we would need to start multiple tasks one after the other. To prevent that, I made a short method that executes a list of tasks on the command line (because chaining tasks in gradle somehow failed to work.)
 Add the following lines below the `sonar` block
     
 {% highlight groovy %}
@@ -236,9 +236,9 @@ Add the following lines below the `sonar` block
     }
 {% endhighlight %}
     
-Now you can just start the task `sonarComplete` and it will clean the project, assemble your flavor debug, run lint, run unit tests and jacoco and finally sonarqube to check and upload everything to the server.
+Now you can just start the task `sonarComplete` and it will clean the project, assemble your flavor debug, run lint, run unit tests and jacoco and finally SonarQube to check and upload everything to the server.
 
-When the task is finished, you should be able open the [sonar website](http://localhost:9000) and on the top right you see the project with the name you defined.
+When the task is finished, you should be able open the [SonarQube website](http://localhost:9000) and on the top right you see the project with the name you defined.
 
 ![Code Flow]({{ site.url }}/images/sonarqube.png)
 
@@ -253,7 +253,7 @@ If you now want to start to write your own tests you will pretty soon run into a
         ...
 {% endhighlight %}
 
-To fix that just add a the following test option to your `android` block
+To fix that just add the following test option to your `android` block
 
 {% highlight groovy %}
     // see for details: http://tools.android.com/tech-docs/unit-testing-support#TOC-Method-...-not-mocked.-
@@ -265,7 +265,7 @@ To fix that just add a the following test option to your `android` block
 # What the future brings
 
 The next step on my side is to make sure that the `sonarComplete` task is triggered by our Jenkins CI. Over time I will probably tune the quality profiles and gates to our needs. Nonetheless SonarQube is always a great way to get a fast overview about a new and probably big project and code base. So even if your company does not have or want a dedicated SonarQube instance you should consider doing everything locally to help you monitor yourself and learn. Because we need and have to learn new things every day!
-If you have question, suggestions or issues, feel free to ask them!
+If you have questions, suggestions or issues, feel free to ask them!
 
 # Sample project
 
@@ -273,4 +273,4 @@ Feel free to check out the [sample project](https://github.com/WarrenFaith/Sonar
 
 #### About the author
 
-*Martin Breuer is an Android developer for [AVM.de](http://avm.de)'s Android app. He has been writing Android code since 2009. He lives in Potsdam, Germany with his wife and a daughters.*
+*Martin Breuer is an Android developer for [AVM.de](http://avm.de)'s Android app. He has been writing Android code since 2009. He lives in Potsdam, Germany with his wife and a daughter.*
