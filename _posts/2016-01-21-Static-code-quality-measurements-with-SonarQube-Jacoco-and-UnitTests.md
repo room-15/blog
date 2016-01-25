@@ -67,17 +67,17 @@ Note: For an easy understanding, I would suggest to create a new project with de
 To enable coverage report generation, we need to set a flag to true. This `testCoverageEnabled` flag should be set to true in the `debug` build type and to false in `release`. Your build type definitions should look like this
 
 {% highlight groovy %}
-    buildTypes {
-        debug {
-            testCoverageEnabled true
-        }
-
-        release {
-            testCoverageEnabled false
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+buildTypes {
+    debug {
+        testCoverageEnabled true
     }
+
+    release {
+        testCoverageEnabled false
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+}
 {% endhighlight %}
     
 For understanding purpose, we also add at least a `develop` product flavor. Why will be obvious later. So lets do that
