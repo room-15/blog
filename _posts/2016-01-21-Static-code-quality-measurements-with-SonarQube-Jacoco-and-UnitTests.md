@@ -83,18 +83,18 @@ buildTypes {
 For understanding purpose, we also add at least a `develop` product flavor. Why will be obvious later. So lets do that
 
 {% highlight groovy %}
-    productFlavors {
-        develop {
-            // currently nothing special here
-        }
+productFlavors {
+    develop {
+        // currently nothing special here
     }
+}
 {% endhighlight %}
 
 SonarQube requires the app version to track differences between app versions. So we need to "publish" this information so that we can use it everywhere. Add the following line to gradle. Best would be above the `android` block
 
 {% highlight groovy %}
-    def APP_VERSION = "1.0.0"
-    ext.set('AppVersion', APP_VERSION)
+def APP_VERSION = "1.0.0"
+ext.set('AppVersion', APP_VERSION)
 {% endhighlight %}
     
 Now we can use `AppVersion` everywhere as a variable.
@@ -106,39 +106,39 @@ There is a really good gradle plugin which will generate gradle tasks based on y
 The setup is easy, we need to add the classpath to the root gradle file
 
 {% highlight groovy %}
-    buildscript {
-        repositories {
-            jcenter()
-        }
-        dependencies {
-            classpath 'com.android.tools.build:gradle:1.5.0'
-            classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-        }
+buildscript {
+    repositories {
+        jcenter()
     }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+    }
+}
 {% endhighlight %}
 
 And after that we can apply the plugin in our module gradle file
 
 {% highlight groovy %}
-    apply plugin: 'jacoco-android'
+apply plugin: 'jacoco-android'
 {% endhighlight %}
 
 What kind of reports are generated should be defined in a separate extension, just add this to your module gradle file (outside the `android` block)
 
 {% highlight groovy %}
-    jacocoAndroidUnitTestReport {
-        csv.enabled false
-        html.enabled true
-        xml.enabled true
-    }
+jacocoAndroidUnitTestReport {
+    csv.enabled false
+    html.enabled true
+    xml.enabled true
+}
 {% endhighlight %}
 
 Finally we make sure that we are using the latest version of jacoco by defining that in a `jacoco` block (outside the `android` block)
 
 {% highlight groovy %}
-    jacoco {
-        toolVersion = "0.7.5.201505241946"
-    }
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+}
 {% endhighlight %}
    
 After syncing the project we can see the new added tasks under `reporting`. (Hint: Open the gradle view on the right side of Android Studio, press the "expand all" button and just type "jacoco". Navigate through the list of hits with the arrow keys and you should be able to find the tasks easily.)
@@ -159,9 +159,9 @@ So now that our tests are working and jacoco creates the reports correctly, we w
 Lets start with adding the SonarQube plugin to the top of the build.gradle. The SonarQube plugin already supports the newest plugin format, therefore lets use it!
 
 {% highlight groovy %}
-    plugins {
-       id "org.sonarqube" version "1.2"
-    }
+plugins {
+   id "org.sonarqube" version "1.2"
+}
 {% endhighlight %}
 
 Directly after the last `apply plugin` line in our gradle file, we add a new line with `apply from: '../sonarqube.gradle'`. Now create the file in your project root folder. Separating different plugin settings into separate gradle files helps keeping the main file small and clean and also gives you the ability to just comment out the plugin with 2 lines (`apply plugin` and `apply from`).
@@ -169,71 +169,71 @@ Directly after the last `apply plugin` line in our gradle file, we add a new lin
 There we create a `sonarqube {}` block and inside we create a `properties {}` block. We should have this
 
 {% highlight groovy %}
-    sonarqube {
-        properties {
-            
-        }
+sonarqube {
+    properties {
+        
     }
+}
 {% endhighlight %}
     
 Now the magic begins. We have different properties we need to define. Instead of writing long texts, here is a commented version of the setup I use
 
 {% highlight groovy %}
-    // recommend to specify the flavor once and dynamically adapt paths to it
-    def flavor = "develop" // flavor we want to have tested. Should be static
-    def Flavor = "Develop" // flavor again, but starting with upper case
+// recommend to specify the flavor once and dynamically adapt paths to it
+def flavor = "develop" // flavor we want to have tested. Should be static
+def Flavor = "Develop" // flavor again, but starting with upper case
 
-    // noinspection is used to remove some "warnings" from Android Studio
-    sonarqube {
-        //noinspection GroovyAssignabilityCheck
-        properties {
-            /* SonarQube needs to be informed about your libraries and the android.jar to understand that methods like
-             * onResume() is called by the Android framework. Without that information SonarQube will very likely create warnings
-             * that those methods are never used and they should be removed. Same applies for libraries where parent classes
-             * are required to understand how a class works and is used. */
-            def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-22/android.jar," +
-                    "build/intermediates/exploded-aar/**/classes.jar"
+// noinspection is used to remove some "warnings" from Android Studio
+sonarqube {
+    //noinspection GroovyAssignabilityCheck
+    properties {
+        /* SonarQube needs to be informed about your libraries and the android.jar to understand that methods like
+         * onResume() is called by the Android framework. Without that information SonarQube will very likely create warnings
+         * that those methods are never used and they should be removed. Same applies for libraries where parent classes
+         * are required to understand how a class works and is used. */
+       def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-22/android.jar," +
+               "build/intermediates/exploded-aar/**/classes.jar"
+
+       property "sonar.host.url", "http://localhost:9000"
+       property "sonar.projectKey", "MyAppName" // some shortcut name
+       property "sonar.projectName", "My App Name"
+       property "sonar.projectVersion", AppVersion
     
-            property "sonar.host.url", "http://localhost:9000"
-            property "sonar.projectKey", "MyAppName" // some shortcut name
-            property "sonar.projectName", "My App Name"
-            property "sonar.projectVersion", AppVersion
-    
-            property "sonar.sourceEncoding", "UTF-8"
-            property "sonar.sources", "src/main/java,src/main/res" // first defines where the java files are, the second where the xml files are
-            property "sonar.binaries", "build/intermediates/classes/${flavor}/debug"
-            property "sonar.libraries", libraries
-            property "sonar.java.binaries", "build/intermediates/classes/${flavor}/debug"
-            property "sonar.java.libraries", libraries
-    
-            property "sonar.tests", "src/test/java" // where the tests are located
-            property "sonar.java.test.binaries", "build/intermediates/classes/${flavor}/debug"
-            property "sonar.java.test.libraries", libraries
-    
-            property "sonar.scm.provider", "git"
-    
-            property "sonar.jacoco.reportPath", "build/jacoco/test${Flavor}DebugUnitTest.exec" // path to coverage reports
-            property "sonar.java.coveragePlugin", "jacoco"
-            property "sonar.junit.reportsPath", "build/test-results/${flavor}Debug" // path to junit reports
-            property "sonar.android.lint.report", "build/outputs/lint-results-${flavor}Debug.xml" // path to lint reports
-        }
+       property "sonar.sourceEncoding", "UTF-8"
+       property "sonar.sources", "src/main/java,src/main/res" // first defines where the java files are, the second where the xml files are
+       property "sonar.binaries", "build/intermediates/classes/${flavor}/debug"
+       property "sonar.libraries", libraries
+       property "sonar.java.binaries", "build/intermediates/classes/${flavor}/debug"
+       property "sonar.java.libraries", libraries
+ 
+       property "sonar.tests", "src/test/java" // where the tests are located
+       property "sonar.java.test.binaries", "build/intermediates/classes/${flavor}/debug"
+       property "sonar.java.test.libraries", libraries
+ 
+       property "sonar.scm.provider", "git"
+ 
+       property "sonar.jacoco.reportPath", "build/jacoco/test${Flavor}DebugUnitTest.exec" // path to coverage reports
+       property "sonar.java.coveragePlugin", "jacoco"
+       property "sonar.junit.reportsPath", "build/test-results/${flavor}Debug" // path to junit reports
+       property "sonar.android.lint.report", "build/outputs/lint-results-${flavor}Debug.xml" // path to lint reports
     }
+}
 {% endhighlight %}
     
 This is our complete SonarQube setup. To make everything that is needed before starting the SonarQube check, we would need to start multiple tasks one after the other. To prevent that, I made a short method that executes a list of tasks on the command line (because chaining tasks in gradle somehow failed to work.)
 Add the following lines below the `sonar` block
     
 {% highlight groovy %}
-    import org.gradle.internal.os.OperatingSystem;
-    
-    task sonarComplete(type: Exec) {
-        workingDir "./"
-        def command = "../gradlew"
-        if (OperatingSystem.current().isWindows()) {
-            command = command + ".bat"
-        }
-        commandLine command, "clean", "assemble${Flavor}Debug", "lint${Flavor}Debug", "jacocoTest${Flavor}DebugUnitTestReport", "sonarqube"
+import org.gradle.internal.os.OperatingSystem;
+   
+task sonarComplete(type: Exec) {
+    workingDir "./"
+    def command = "../gradlew"
+    if (OperatingSystem.current().isWindows()) {
+        command = command + ".bat"
     }
+    commandLine command, "clean", "assemble${Flavor}Debug", "lint${Flavor}Debug", "jacocoTest${Flavor}DebugUnitTestReport", "sonarqube"
+}
 {% endhighlight %}
     
 Now you can just start the task `sonarComplete` and it will clean the project, assemble your flavor debug, run lint, run unit tests and jacoco and finally SonarQube to check and upload everything to the server.
@@ -247,19 +247,19 @@ When the task is finished, you should be able open the [SonarQube website](http:
 If you now want to start to write your own tests you will pretty soon run into an error mentioning that some calls are not mocked.
 
 {% highlight groovy %}
-    java.lang.RuntimeException: Method d in android.util.Log not mocked. See http://g.co/androidstudio/not-mocked for details.
-        at android.util.Log.d(Log.java)
-        at com.example.martin.myapplication.ExampleUnitTest.addition_isCorrect(ExampleUnitTest.java:16)
-        ...
+java.lang.RuntimeException: Method d in android.util.Log not mocked. See http://g.co/androidstudio/not-mocked for details.
+    at android.util.Log.d(Log.java)
+    at com.example.martin.myapplication.ExampleUnitTest.addition_isCorrect(ExampleUnitTest.java:16)
+    ...
 {% endhighlight %}
 
 To fix that just add the following test option to your `android` block
 
 {% highlight groovy %}
-    // see for details: http://tools.android.com/tech-docs/unit-testing-support#TOC-Method-...-not-mocked.-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
+// see for details: http://tools.android.com/tech-docs/unit-testing-support#TOC-Method-...-not-mocked.-
+testOptions {
+    unitTests.returnDefaultValues = true
+}
 {% endhighlight %}
 
 # What the future brings
