@@ -46,7 +46,7 @@ Now you start to evaluate how this could happen only to find out (probably after
 
 The worst wildcard would be if there is no version defined at all but only the `+`. You would never realize that there are improvements or changes in an automatically updated version. You might have workarounds implemented for existing bugs that are already fixed since ages. The API you use might be already deprecated. There might be a cooler way to get stuff done. You will probably never find out until you specifically check your code for deprecate warnings or the API of the library changes in a way that your build breaks.
 
-## You are in not in charge!
+## You are not in charge!
 
 The biggest problem with wildcards is that you lose the power. The wildcard decides when and what and to which version it will be updated. You are not in charge of any of these changes. You are not in charge of your project anymore.
 
