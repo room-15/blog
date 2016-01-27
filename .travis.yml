@@ -1,0 +1,7 @@
+language: ruby
+rvm:
+    - 2.1.7
+branches:
+  only:
+    - gh-pages
+script: bundle install && bundle exec jekyll build
