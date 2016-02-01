@@ -72,4 +72,4 @@ With that in mind you will have repeatable builds, no bad suprises and complete 
 
 #### About the author
 
-*Martin Breuer is an Android developer for [AVM.de](http://avm.de)'s Android app. He has been writing Android code since 2009. He lives in Potsdam, Germany with his wife and a daughter.*
+*Martin Breuer is an Android developer for [AVM](http://avm.de)'s Android app. He has been writing Android code since 2009. He lives in Potsdam, Germany with his wife and a daughter.*
