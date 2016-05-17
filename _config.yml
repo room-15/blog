@@ -17,3 +17,6 @@ author:
 version: 1.0.0
 github:
   repo: https://github.com/room-15/blog
+
+# Gems
+gems: [jekyll-paginate]
