@@ -4,8 +4,6 @@ title: CamelHumps the hidden Android Studio gem
 post_author: Martin Breuer
 ---
 
-# CamelHumps
-
 Recently I saw a [new post](https://plus.google.com/u/0/+PhilippeBreault/posts/MHYF7wymVgi) in this rarely updated [Android Studio Tips of the Day](https://plus.google.com/collection/wtO0PB) collection.
 
 CamelHumps is a blessing while developing! I wanted that feature since ages but I would never suspected to find it named CamelHumps and I would probably never tested that setting.
