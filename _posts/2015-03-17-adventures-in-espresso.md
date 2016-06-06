@@ -4,26 +4,25 @@ title: Adventures in Espresso and Unit Testing Part 1
 post_author: Carl Anderson
 ---
 
-I recently decided it was time to add some automated testing to my app. After doing a bit of research, it seemed like adding Espresso for automated testing, and JUnit tests for my model objects would be the right way to go. So I started off by going to the [Espresso setup page](https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions), which had a bunch of instructions for my IDE, Android Studio. It *seemed* relatively straightforward.
+*Note: Espresso has moved to a new website, and thus some of the criticism below is out of date.*
+
+I recently decided it was time to add some automated testing to my app. After doing a bit of research, it seemed like adding Espresso for automated testing, and JUnit tests for my model objects would be the right way to go. So I started off by going to the [Espresso setup page](https://google.github.io/android-testing-support-library/), which had a bunch of instructions for my IDE, Android Studio. It *seemed* relatively straightforward.
 
 ### Setting up Espresso
 
 The first thing you need to know with the Setup instructions page, is that it apparently has bugs in it that the maintainers are too lazy to fix. If you copy and paste everything, according to the instruction, the HelloWorldEspressoTest won't compile or run. Notes from figuring this out:
 
 * If you run proguard on your test binary (because you have lots of prolific APIs included), it's not going to work. I had minifyEnabled set to true in my gradle build file, which prevented the tests from running. Fortunately for me I realized I didn't need the [18k APIs that come with guava](http://jakewharton.com/play-services-is-a-monolith/).
-* Missing from the setup instructions is that you'll need to have the [full set of excludes](https://code.google.com/p/android-test-kit/issues/detail?id=122) under *packagingOptions*
-* All of the examples are using statically imported functions. So things like *onView* is really *Espresso.onView*, but since they don't list their imports in the examples, cutting and pasting is going to result in a bunch of compile errors. Check the comments at the bottom of the page to get help with figuring them out.
+* Missing from the setup instructions is that you'll need to have the [full set of excludes](https://code.google.com/p/android/issues/detail?id=195331&can=1&q=label%3AComponent-Test-Support-Libraries%20packagingOptions&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars) under *packagingOptions*
 * The example uses the @LargeTest annotation, but doesn't say what it is, or why. I found a pretty good explanation [here](http://googletesting.blogspot.com/2010/12/test-sizes.html).
 
-The HelloWorld test they post has basically no explanation(which tends to be the status quo with this API). It wasn't until using the API for a bit that I even understood what it tests - it looks for a View object that specifically has the exact text of "Hello world". Not "Hello World", not "Hello World!", and certainly not "mHello_World." If you type the wrong text, it won't find the view, and will fail. After finding the view (or not), it specifically checks whether it is displayed or not. You would think that *check()* would return a [boolean value](http://stackoverflow.com/questions/20807131/espresso-return-boolean-if-view-exists), but instead it returns a *ViewInteraction*. wat.
+The [BasicSample](https://github.com/googlesamples/android-testing/tree/master/ui/espresso/BasicSample) test they post has basically no explanation(which tends to be the status quo with this API). It wasn't until using the API for a bit that I even understood what it tests - it looks for a EditText, types in a predefined string "Espress", and performs a click on a buttons, and then tests whether another textView has the same text on it or not. You would think that *check()* would return a [boolean value](http://stackoverflow.com/questions/20807131/espresso-return-boolean-if-view-exists), but instead it returns a *ViewInteraction*.
 
-Anyway, the entire test is fairly useless, I recommend skipping it and writing your own equivalent for your app. Find a view object (TextView or similar) that will show up on your app's main Activity, and write a line to check if it's there:
-
-      onView(withId(R.id.main_activity_textview)).check(matches(isDisplayed()));
+Anyway, the entire test is fairly simple, and hopefully you can understand what it's doing.
 
 ### Test File locations
 
-I'm getting ahead of my self a bit. At this point I had changed my gradle file to have all of the changes necessary to get Espresso to run, the next step was writing an actual test. Two questions I had at this point - where do I put my tests, and how do I run them. Now, the guide suggests putting them in
+At this point I had changed my gradle file to have all of the changes necessary to get Espresso to run, the next step was writing an actual test. Two questions I had at this point - where do I put my tests, and how do I run them. Now, the guide suggests putting them in
 
 > src/androidTest/java/com.example.package/
 
@@ -47,7 +46,7 @@ Once I had all of that figured out, I wrote my first UI test for Espresso. It wa
 * What are good things to test? What are bad things to test? What are some of the limitations?
 * Why would I use Espresso?
 
-The main [Espresso](https://code.google.com/p/android-test-kit/wiki/Espresso) page has about 6 sentences that read more like marketing than any sort of attempt at answering these questions. The video linked on that page is **painful** to watch. Terrible jokes / attempts at comedy, quotes like "When you make it easy for developers, they'll just do it", and "it's easy to set up." It eventually gets to talking about the framework, but is much more of a sales pitch than a manifesto for how to use Espresso.
+The main [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/index.html) page unfortunately doesn't do a good job of answering these questions.
 
 What I've learned since trying to do things in the framework is:
 
@@ -56,7 +55,7 @@ What I've learned since trying to do things in the framework is:
 * Espresso won't help you make sure your layout isn't screwed up. It programmatically looks up your view object, and as long as it's on the screen everything will work.
 * Sometimes things don't work even though everything is on the screen. I ended up needing to use scrollTo() to get a button "visible", even though as I was watching on the screen, it was fully visible.
 
-So far I've had some decent success writing tests that navigate through my UI, but figuring out the process has been rather difficult. There's just not very good documentation (again with the theme!). For instance, when my button click was failing, because it wasn't "90% visible", I shouldn't have to google a solution to this:
+So far I've had some decent success writing tests that navigate through my UI, but figuring out the process has been rather difficult. There's just not very good documentation. For instance, when my button click was failing, because it wasn't "90% visible", I shouldn't have to google a solution to this:
 
     android.support.test.espresso.PerformException: Error performing 'single click' on view 'with id: test.com.myproject.app:id/navigationButtonProfile'.
 Caused by: java.lang.RuntimeException: Action will not be performed because the target view does not match one or more of the following constraints:
