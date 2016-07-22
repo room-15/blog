@@ -29,8 +29,9 @@ If the user dismisses the dialog within this 3 seconds, we are storing this as "
 # Considerations
 
 Two most important things for your change log:
- # be honest and not short handed: "fixed multiple bugs" is boring to read. Express what you have done in a more explanatory way without throwing technical details around
- # make sure the change log can be opened on demand in your settings or about page. Also you might want to reset the "interested" value once they have opened the change log. You know, people might change :)
+
+* be honest and not short handed: "fixed multiple bugs" is boring to read. Express what you have done in a more explanatory way without throwing technical details around
+* make sure the change log can be opened on demand in your settings or about page. Also you might want to reset the "interested" value once they have opened the change log. You know, people might change :)
 
 #### About the author
 
